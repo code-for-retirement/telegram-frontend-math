@@ -13,13 +13,13 @@ const defaultTx: SendTransactionRequest = {
 
     {
       // The receiver's address.
-      address: '0:8a5a9c7b70d329be670de4e6cce652d464765114aa98038c66c3d8ceaf2d19b0',
+      address: 'UQDZVMT13abznb75KsKwFFZRau_4xPUXltoaCGeMbWjcX7tf',
       // Amount to send in nanoTON. For example, 0.005 TON is 5000000 nanoTON.
-      amount: '5000000',
+      amount: '1000000',
       // (optional) State initialization in boc base64 format.
-      stateInit: 'te6cckEBBAEAOgACATQCAQAAART/APSkE/S88sgLAwBI0wHQ0wMBcbCRW+D6QDBwgBDIywVYzxYh+gLLagHPFsmAQPsAlxCarA==',
+      // stateInit: 'te6cckEBBAEAOgACATQCAQAAART/APSkE/S88sgLAwBI0wHQ0wMBcbCRW+D6QDBwgBDIywVYzxYh+gLLagHPFsmAQPsAlxCarA==',
       // (optional) Payload in boc base64 format.
-      payload: 'te6ccsEBAQEADAAMABQAAAAASGVsbG8hCaTc/g==',
+      // payload: 'te6ccsEBAQEADAAMABQAAAAASGVsbG8hCaTc/g==',
     },
 
     // Uncomment the following message to send two messages in one transaction.
@@ -50,7 +50,8 @@ export function TxForm() {
     <div className="send-tx-form">
       <h3>Configure and send transaction</h3>
 
-      <ReactJson theme="ocean" src={defaultTx} onEdit={onChange} onAdd={onChange} onDelete={onChange}/>
+      <ReactJson theme="ocean" src={defaultTx} />
+      {/* onEdit={onChange} onAdd={onChange} onDelete={onChange} */}
 
       {wallet ? (
         <button onClick={() => tonConnectUi.sendTransaction(tx)}>

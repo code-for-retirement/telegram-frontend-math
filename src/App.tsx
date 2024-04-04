@@ -1,5 +1,5 @@
 import './App.scss'
-import {THEME, TonConnectUIProvider} from "@tonconnect/ui-react";
+import {THEME, TonConnectButton, TonConnectUIProvider} from "@tonconnect/ui-react";
 import {Header} from "./components/Header/Header";
 import {TxForm} from "./components/TxForm/TxForm";
 import {Footer} from "./components/Footer/Footer";
@@ -8,7 +8,7 @@ import {TonProofDemo} from "./components/TonProofDemo/TonProofDemo";
 function App() {
   return (
       <TonConnectUIProvider
-          manifestUrl="https://code-for-retirement.github.io/telegram-frontend-math/tonconnect-manifest.json"
+          manifestUrl="https://raw.githubusercontent.com/code-for-retirement/telegram-frontend-math/main/public/tonconnect-manifest.json"
           uiPreferences={{ theme: THEME.DARK }}
           walletsListConfiguration={{
             includeWallets: [
@@ -38,9 +38,10 @@ function App() {
       >
         <div className="app">
             <Header />
+            <TonConnectButton />
             <TxForm />
-            <TonProofDemo />
-            <Footer />
+            {/* <TonProofDemo /> */}
+            {/* <Footer /> */}
         </div>
       </TonConnectUIProvider>
   )

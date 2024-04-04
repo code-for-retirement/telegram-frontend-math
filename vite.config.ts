@@ -9,7 +9,7 @@ export default defineConfig({
     outDir: 'docs'
   },
   // @ts-ignore
-  base: 'https://code-for-retirement.github.io/telegram-frontend-math/',
+  base: '/telegram-frontend-math/',
   server: {
     fs: {
       allow: ['../sdk', './'],

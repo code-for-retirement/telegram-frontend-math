@@ -1,129 +1,67 @@
-import { SendTransactionRequest } from '@tonconnect/sdk';
-import { Button, Input, Typography } from 'antd';
-import cn from 'classnames';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import ReactJson from 'react-json-view';
-import { useRecoilValueLoadable } from 'recoil';
-import { connector, sendTransaction } from 'src/connector';
-import { useTonWallet } from 'src/hooks/useTonWallet';
-import { generatePayload, getAddressAndStateInit, getRawAddress } from 'src/nft-transaction';
-import { walletsListQuery } from 'src/state/wallets-list';
-import { Address } from 'ton';
+import React, {useCallback, useState} from 'react';
+import ReactJson, {InteractionProps} from 'react-json-view';
 import './style.scss';
+import {SendTransactionRequest, useTonConnectUI, useTonWallet} from "@tonconnect/ui-react";
 
-const { Title } = Typography;
+// In this example, we are using a predefined smart contract state initialization (`stateInit`)
+// to interact with an "EchoContract". This contract is designed to send the value back to the sender,
+// serving as a testing tool to prevent users from accidentally spending money.
+const defaultTx: SendTransactionRequest = {
+  // The transaction is valid for 10 minutes from now, in unix epoch seconds.
+  validUntil: Math.floor(Date.now() / 1000) + 600,
+  messages: [
+
+    {
+      // The receiver's address.
+      address: '0:8a5a9c7b70d329be670de4e6cce652d464765114aa98038c66c3d8ceaf2d19b0',
+      // Amount to send in nanoTON. For example, 0.005 TON is 5000000 nanoTON.
+      amount: '5000000',
+      // (optional) State initialization in boc base64 format.
+      stateInit: 'te6cckEBBAEAOgACATQCAQAAART/APSkE/S88sgLAwBI0wHQ0wMBcbCRW+D6QDBwgBDIywVYzxYh+gLLagHPFsmAQPsAlxCarA==',
+      // (optional) Payload in boc base64 format.
+      payload: 'te6ccsEBAQEADAAMABQAAAAASGVsbG8hCaTc/g==',
+    },
+
+    // Uncomment the following message to send two messages in one transaction.
+    /*
+    {
+      // Note: Funds sent to this address will not be returned back to the sender.
+      address: '0:2ecf5e47d591eb67fa6c56b02b6bb1de6a530855e16ad3082eaa59859e8d5fdc',
+      amount: toNano('0.01').toString(),
+    }
+    */
+
+  ],
+};
 
 export function TxForm() {
-	const [tx, setTx] = useState<SendTransactionRequest | null>(null);
-	const [sendTo, setSendTo] = useState<string>('');
-	const [addressError, setAddressError] = useState<boolean>(false);
-	const wallet = useTonWallet();
-	const walletsList = useRecoilValueLoadable(walletsListQuery);
 
-	const removeTxMessage = useCallback(() => {
-		if (tx && tx.messages.length === 2) {
-			setTx(
-				(value) =>
-					({
-						...value,
-						messages: value!.messages.slice(1),
-					} as SendTransactionRequest),
-			);
-		}
-	}, [tx]);
+  const [tx, setTx] = useState(defaultTx);
 
-	useEffect(() => {
-		if (wallet) {
-			const { address, stateInit } = getAddressAndStateInit(connector.wallet!.account.address);
+  const wallet = useTonWallet();
 
-			const tx = {
-				validUntil: Date.now() + 1000000,
-				messages: [
-					{
-						address,
-						amount: '100000000',
-						stateInit,
-					},
-				],
-			};
+  const [tonConnectUi] = useTonConnectUI();
 
-			setTx(tx);
-		} else {
-			setTx(null);
-			setSendTo('');
-		}
-	}, [wallet]);
+  const onChange = useCallback((value: InteractionProps) => {
+    setTx(value.updated_src as SendTransactionRequest)
+  }, []);
 
-	useEffect(() => {
-		if (sendTo) {
-			let isCorrect;
-			try {
-				Address.parseFriendly(sendTo);
-				isCorrect = true;
-			} catch (e) {
-				isCorrect = false;
-			}
+  return (
+    <div className="send-tx-form">
+      <h3>Configure and send transaction</h3>
 
-			if (!isCorrect) {
-				setAddressError(true);
-				removeTxMessage();
-				return;
-			}
+      <ReactJson theme="ocean" src={defaultTx} onEdit={onChange} onAdd={onChange} onDelete={onChange}/>
 
-			setAddressError(false);
-			const payload = generatePayload(sendTo);
-
-			setTx(
-				(value) =>
-					({
-						...value,
-						messages: [...value!.messages].concat({
-							address: value!.messages[0].address,
-							amount: '50000000',
-							payload,
-						}),
-					} as SendTransactionRequest),
-			);
-		} else {
-			setAddressError(false);
-			removeTxMessage();
-		}
-	}, [sendTo]);
-
-	const onChange = useCallback(
-		(value: object) => setTx((value as { updated_src: SendTransactionRequest }).updated_src),
-		[],
-	);
-
-	return (
-		<div className="send-tx-form">
-			<Title level={3}>Configure and send transaction</Title>
-
-			{wallet && tx ? (
-				<>
-					<Title level={4}>Create NFT and send to the friend</Title>
-					<div className="send-tx-wrapper">
-						<div className="send-tx-input-wrapper">
-							(Optional) Send NFT to (user friendly address):
-							<Input value={sendTo} onChange={(e) => setSendTo(e.target.value)}></Input>
-							<span className={cn('send-tx-input-wrapper-error', { 'send-tx-input-wrapper-error_show': addressError })}>
-								Wrong address
-							</span>
-						</div>
-						<ReactJson src={tx} theme="ocean" onEdit={onChange} onAdd={onChange} onDelete={onChange} />
-						<Button
-							type="primary"
-							shape="round"
-							disabled={addressError}
-							onClick={() => sendTransaction(tx, walletsList.contents.walletsList[0])}
-						>
-							Send transaction
-						</Button>
-					</div>
-				</>
-			) : (
-				<div className="send-tx-form__error">Connect wallet to send the transaction</div>
-			)}
-		</div>
-	);
+      {wallet ? (
+        <button onClick={() => tonConnectUi.sendTransaction(tx)}>
+          Send transaction
+        </button>
+      ) : (
+        <button onClick={() => tonConnectUi.openModal()}>
+          Connect wallet to send the transaction
+        </button>
+      )}
+    </div>
+  );
 }
+

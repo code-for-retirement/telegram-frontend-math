@@ -1,7 +1,7 @@
 {
-    "url": "https://github.io/code-for-retirement/telegram-frontend-math",
-    "name": "TON Vote",
-    "iconUrl": "https://ton.vote/logo.png",
-    "termsOfUseUrl": "https://ton-connect.github.io/demo-dapp/terms-of-use.txt",
-    "privacyPolicyUrl": "https://ton-connect.github.io/demo-dapp/privacy-policy.txt"
+  "url": "https://code-for-retirement.github.io/telegram-frontend-math/",
+  "name": "Demo Dapp with React UI",
+  "iconUrl": "https://code-for-retirement.github.io/telegram-frontend-math/apple-touch-icon.png",
+  "termsOfUseUrl": "https://code-for-retirement.github.io/telegram-frontend-math/terms-of-use.txt",
+  "privacyPolicyUrl": "https://code-for-retirement.github.io/telegram-frontend-math/privacy-policy.txt"
 }

@@ -1,40 +1,43 @@
-import './footer.scss';
-import { Grid, Button } from 'antd-mobile';
+import { TabBar } from 'antd-mobile';
 import { UserOutline, AppstoreOutline, FileOutline, CalendarOutline, AppOutline } from 'antd-mobile-icons';
 
-const defaultWalletsSelectValue = '["Tonkeeper", "OpenMask"]';
-
 export const Footer = () => {
+    const tabs = [
+        {
+            key: 'result',
+            title: 'Kết quả',
+            icon: <FileOutline />,
+            badge: '*',
+        },
+        {
+            key: 'history',
+            title: 'Lịch sử',
+            icon: <CalendarOutline />,
+            badge: '5',
+        },
+        {
+            key: 'home',
+            title: 'Trang chủ',
+            icon: <AppOutline />,
+            badge: '99+',
+        },
+        {
+            key: 'other',
+            title: 'Tiện ích',
+            icon: <AppstoreOutline />,
+        },
+        {
+            key: 'profile',
+            title: 'Cá nhân',
+            icon: <UserOutline />,
+        },
+    ]
+
     return (
-        <Grid columns={5} gap={8}>
-            <Grid.Item>
-                <Button onClick={() => {console.log('yeah')}}>
-                    <FileOutline /><br />
-                    Kết quả
-                </Button>
-            </Grid.Item>
-            <Grid.Item>
-                <Button onClick={() => {console.log('yeah')}}>
-                    <CalendarOutline /><br />
-                    Lịch sử</Button>
-            </Grid.Item>
-            <Grid.Item>
-                <Button onClick={() => {console.log('yeah')}}>
-                <AppOutline /><br />
-                    Trang chủ</Button>
-            </Grid.Item>
-            <Grid.Item>
-                <Button onClick={() => {console.log('yeah')}}>
-                    <AppstoreOutline /><br />
-                    Tiện ích
-                </Button>
-            </Grid.Item>
-            <Grid.Item>
-                <Button onClick={() => {console.log('yeah')}}>
-                    <UserOutline /><br />
-                    Cá nhân
-                </Button>
-            </Grid.Item>
-        </Grid >
+        <TabBar safeArea>
+            {tabs.map(item => (
+                <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
+            ))}
+        </TabBar>
     )
 }

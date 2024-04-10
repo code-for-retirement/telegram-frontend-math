@@ -9,8 +9,7 @@ export const Home = () => {
 	const navigate = useNavigate();
 	return (
 		<AutoCenter>
-			<Button onClick={() => navigate(`ticket/new`)}>New Ticket</Button>
-			<Footer/>
+			<Button onClick={() => {navigate(`ticket/new`)}}>New Ticket</Button>
 		</AutoCenter>
 	);
 }

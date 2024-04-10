@@ -5,6 +5,7 @@ import { NumberButton } from '../../../common/NumberButton/NumberButton';
 
 
 export const StepPickNumber = (props: any) => {
+	console.log('yeah');
 	const [step, setStep] = useState<number>(1);
 
 	const renderSwitch = () => {
@@ -45,7 +46,7 @@ export const StepPickNumber = (props: any) => {
 
 	return (
 		<>
-		{renderSwitch()}
+		{/* {renderSwitch()} */}
 		<Steps current={1} style={{ 'color': 'white' }}>
 				<Step title='Cách chơi' />
 				<Step title='Chọn số' />

@@ -4,7 +4,7 @@ import { redirect, useNavigate } from 'react-router-dom';
 
 export const Footer = () => {
     const navigate = useNavigate();
-    const pathname:string = window.location.pathname;
+    // const pathname = window.location.pathname;
     const setRouteActive = (value: string) => {
         navigate(value, { replace: true });
     }
@@ -43,7 +43,9 @@ export const Footer = () => {
     return (
         <TabBar safeArea onChange={(value:string) => setRouteActive(value)}>
             {tabs.map(item => (
-                <TabBar.Item activeKey={pathname} key={item.key} icon={item.icon} title={item.title} />
+                <TabBar.Item 
+                // activeKey={pathname:IntrinsicAttributes} 
+                key={item.key} icon={item.icon} title={item.title} />
             ))}
         </TabBar>
     )

@@ -1,12 +1,18 @@
 import './header.scss';
-import { Space } from 'antd-mobile';
+import { Grid } from 'antd-mobile';
 import { TonConnectButton } from "@tonconnect/ui-react";
 
 export const Header = () => {
     return (
-        <Space direction='horizontal' align='baseline' justify='evenly'>
-            <h3 className="title">ViaHe</h3>
-            <TonConnectButton />
-        </Space>
+        <Grid columns={3} gap={8}>
+            <Grid.Item>
+                <h3 className="title">ViaHe</h3>
+            </Grid.Item>
+            <Grid.Item span={2}>
+                <div style={{ float: 'right' }}>
+                    <TonConnectButton />
+                </div>
+            </Grid.Item>
+        </Grid>
     );
 }

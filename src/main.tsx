@@ -13,7 +13,7 @@ import { THEME, useTonWallet, TonConnectUIProvider, useTonConnectUI, UIWallet, A
 
 eruda.init();
 
-const basePath = "/telegram-frontend-math";
+const basePath = import.meta.env.HOMEURL;
 const manifestUrl = "https://raw.githubusercontent.com/code-for-retirement/telegram-frontend-math/main/public/tonconnect-manifest.json";
 const twaConfig: ActionConfiguration = {
     twaReturnUrl: 'https://t.me/<YOUR_APP_NAME>'
@@ -22,10 +22,28 @@ const router = createBrowserRouter([
     {
         path: basePath,
         element: <App />,
+        children: [
+            {
+                path: "result",
+                element: <div>Profile</div>,
+            },
+            {
+                path: "history",
+                element: <div>Profile</div>,
+            },
+            {
+                path: "profile",
+                element: <div>Profile</div>,
+            },
+            {
+                path: "other",
+                element: <div>Others</div>,
+            },
+        ],
     },
     {
-        path: basePath + "/children",
-        element: <div>Children</div>,
+        path: "*",
+        element: <h2>404</h2>,
     },
 ]);
 
@@ -33,7 +51,8 @@ render(
     <StrictMode>
         <TonConnectUIProvider manifestUrl={manifestUrl}
             actionsConfiguration={twaConfig}>
-            <RouterProvider router={router} />
+            {/* <RouterProvider router={router} /> */}
+            <App />
         </TonConnectUIProvider>
     </StrictMode>,
     document.getElementById('root') as HTMLElement

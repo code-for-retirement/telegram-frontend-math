@@ -4,7 +4,7 @@ import './style.scss';
 import { SendTransactionRequest, useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
 import { Home } from '../Home/Home';
 import { Footer } from '../Footer/Footer';
-import { Space } from 'antd-mobile';
+import { Space, Button } from 'antd-mobile';
 
 // In this example, we are using a predefined smart contract state initialization (`stateInit`)
 // to interact with an "EchoContract". This contract is designed to send the value back to the sender,
@@ -42,7 +42,7 @@ export function TxForm() {
   const [tx, setTx] = useState(defaultTx);
 
   const wallet = useTonWallet();
-
+  const [tonConnectUI] = useTonConnectUI();
 
 
   const onChange = useCallback((value: InteractionProps) => {
@@ -52,7 +52,9 @@ export function TxForm() {
   return (
     <div className="send-tx-form">
       <Space direction='vertical' block>
-        <Home />
+      <Button onClick={() => tonConnectUI.sendTransaction(tx)}>
+          Đô nết cho a Nong
+        </Button>
       </Space>
     </div>
   );
